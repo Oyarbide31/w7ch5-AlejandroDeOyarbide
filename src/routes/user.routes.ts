@@ -14,12 +14,12 @@ export const userRouter = createRouter();
 
 userRouter.get(
   '/',
-  AuthInterceptor.authorization.bind(AuthInterceptor),
+  AuthInterceptor.authorization(AuthInterceptor),
   userController.getAll.bind(userController)
 );
 userRouter.get(
   '/:id',
-  AuthInterceptor.authorization.bind(AuthInterceptor),
+  AuthInterceptor.authorization(AuthInterceptor),
   userController.getById.bind(userController)
 );
 
