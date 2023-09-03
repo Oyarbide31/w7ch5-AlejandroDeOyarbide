@@ -3,7 +3,7 @@ import createDebug from 'debug';
 import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import { errorMiddleware } from './middleware/error.middleware.js';
-import { userRouter } from './router/user.router.js';
+import { userRouter } from './routes/user.routes.js';
 import { HttpError } from './types/http.error.js';
 
 const debug = createDebug('V25:App');

@@ -7,3 +7,9 @@ export type User = {
   lastName: string;
   role: 'admin' | 'user';
 };
+
+export type UserLoginData = {
+  userName: string;
+  passwd: string;
+  email: string;
+};

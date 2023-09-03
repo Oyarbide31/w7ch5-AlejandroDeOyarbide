@@ -1,15 +1,9 @@
+/* eslint-disable no-useless-constructor */
 import { NextFunction, Request, Response } from 'express';
 import { Repository } from '../repository/repository.js';
 
-export interface ControllerStructure {
-  getAll(req: Request, res: Response, next: NextFunction): Promise<void>;
-  getById(req: Request, res: Response, next: NextFunction): Promise<void>;
-  create(req: Request, res: Response, next: NextFunction): Promise<void>;
-  update(req: Request, res: Response, next: NextFunction): Promise<void>;
-  delete(req: Request, res: Response, next: NextFunction): Promise<void>;
-}
-
 export abstract class Controller<T extends { id: string | number }> {
+  // eslint-disable-next-line no-unused-vars
   constructor(protected repo: Repository<T>) {}
 
   async getAll(req: Request, res: Response, next: NextFunction) {
