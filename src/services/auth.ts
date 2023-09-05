@@ -39,7 +39,7 @@ En auth:
 se proporcionan metodos para realizar operacioens que tienen que ver con
 la autenticación y la autorización en una aplicación.
 
-Se proporcioan metodos para elhashing y la comparación de contraseñas,
+Se proporcioan metodos para el hashing y la comparación de contraseñas,
 así como para firmar y verificar tokens JWT, algo util para la autenticación
 y autorización de usuarios en una aplicación. También utiliza una clave secreta
 almacenada en la variable Auth.secret para realizar operaciones con tokens JWT

@@ -22,8 +22,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.get('/', (req: Request, res: Response) => {
-  debug('Hola Mundo');
-  res.write('<h1>Champions and Films </h1>');
+  res.write('<h1>Usuarios </h1>');
   res.end();
 });
 

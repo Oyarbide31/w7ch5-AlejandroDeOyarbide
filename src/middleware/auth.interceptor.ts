@@ -1,41 +1,41 @@
-import createDebug from 'debug';
 import { NextFunction, Request, Response } from 'express';
 import { Auth } from '../services/auth.js';
+import { HttpError } from '../types/http.error.js';
 
-const debug = createDebug('W6E:Middleware:Auth.Interceptor');
 export class AuthInterceptor {
-  static authorization: any;
   authorization(req: Request, _res: Response, next: NextFunction) {
-    debug('Call interceptor');
-
     try {
       const token = req.get('Authorization')?.split(' ')[1];
       if (!token) {
-        throw new Error();
+        throw new HttpError(498, 'Invalid token', 'No token provided');
       }
 
       const { id } = Auth.verifyJWTGettingPayLoad(token);
       req.body.validatedId = id;
+
       next();
     } catch (error) {
       next(error);
     }
   }
 
-  authentication(req: Request, _res: Response, next: NextFunction) {
-    debug('Call interceptor');
+  /* Async usersAuthentication(req: Request, _res: Response, next: NextFunction) {
+    const userID = req.body.validatedId;
 
     try {
-      const token = req.get('Authorization')?.split(' ')[1];
-      if (!token) {
-        throw new Error();
+      const usersRepo = new UserMongoRepository();
+      const user = await usersRepo.getById(userID);
+      if (!user) {
+        const error = new HttpError(403, 'Forbidden');
+        next(error);
       }
 
-      const { id } = Auth.verifyJWTGettingPayLoad(token);
-      req.body.validatedId = id;
       next();
     } catch (error) {
       next(error);
     }
   }
+}
+
+*/
 }

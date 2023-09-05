@@ -11,7 +11,6 @@ describe('Given the class UserController', () => {
       search: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
-      login: jest.fn(),
     };
     const userController = new UserController(mockRepo);
 
