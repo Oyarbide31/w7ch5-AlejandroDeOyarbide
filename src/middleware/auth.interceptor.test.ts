@@ -74,7 +74,7 @@
 //         create: jest.fn(),
 //       };
 //       (mockRepo.getById as jest.Mock).mockResolvedValue(mockData);
-//       // Await interceptor.authentication(mockRequest, mockResponse, mockNext);
+//        await interceptor.authentication(mockRequest, mockResponse, mockNext);
 //       expect(mockNext).toHaveBeenCalled();
 //     });
 //     test('usersAuthentication should be used with errors', async () => {
