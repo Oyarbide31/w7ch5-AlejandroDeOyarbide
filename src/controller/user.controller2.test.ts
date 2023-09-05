@@ -27,6 +27,7 @@ describe('Given the class UserController', () => {
       expect(mockRepo.getAll).toHaveBeenCalledWith();
       expect(mockResponse.json).toHaveBeenCalledWith(mockData);
     });
+
     test('Then we use the getbyId() method', async () => {
       const mockData = [{ id: '1', name: 'Alex' }];
       (mockRepo.getById as jest.Mock).mockResolvedValueOnce(mockData);
@@ -37,6 +38,11 @@ describe('Given the class UserController', () => {
       await userController.getById(mockRequest, mockResponse, mockNext);
       expect(mockRepo.getById).toHaveBeenCalled();
       expect(mockResponse.json).toHaveBeenCalledWith(mockData);
+    });
+
+    test('Then, we use create() method', async () => {
+      // Aconst mockedUser= {
+      // }
     });
 
     /*

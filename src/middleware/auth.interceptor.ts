@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { UserMongoRepository } from '../repository/user.mongo.repository.js';
 import { Auth } from '../services/auth.js';
 import { HttpError } from '../types/http.error.js';
 
@@ -19,7 +20,7 @@ export class AuthInterceptor {
     }
   }
 
-  /* Async usersAuthentication(req: Request, _res: Response, next: NextFunction) {
+  async usersAuthentication(req: Request, _res: Response, next: NextFunction) {
     const userID = req.body.validatedId;
 
     try {
@@ -35,7 +36,4 @@ export class AuthInterceptor {
       next(error);
     }
   }
-}
-
-*/
 }
