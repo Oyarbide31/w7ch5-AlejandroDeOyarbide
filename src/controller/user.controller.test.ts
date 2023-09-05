@@ -50,13 +50,10 @@ describe('Given the class UserController', () => {
         email: 'alex@gmail.com',
       };
       (mockRepo.create as jest.Mock).mockReturnValueOnce(mockedUser);
-      const mockRequest = {
-        body: mockedUser,
-      } as Request;
-      const mockResponse = {
-        json: jest.fn(),
-      } as unknown as Response;
+      const mockRequest = { body: mockedUser } as Request;
+      const mockResponse = { json: jest.fn() } as unknown as Response;
       const mockNext = jest.fn();
+
       await userController.create(mockRequest, mockResponse, mockNext);
       expect(mockRepo.create).toHaveBeenCalled();
     });
