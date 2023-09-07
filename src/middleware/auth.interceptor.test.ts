@@ -1,3 +1,105 @@
+import { Request, Response } from 'express';
+import { User } from '../model/user.js';
+import { Repository } from '../repository/repository.js';
+import { Auth } from '../services/auth.js';
+import { HttpError } from '../types/http.error.js';
+import { AuthInterceptor } from './auth.interceptor.js';
+
+jest.mock('../services/auth.js');
+
+describe('Given AuthInterceptor', () => {
+  const interceptor = new AuthInterceptor();
+  describe('When we instantiate it ', () => {
+    test('authorization should be used to be ok', () => {
+      const mockRequest = {
+        get: jest.fn().mockReturnValue('Bearer soy_el_token'),
+        body: {},
+      } as unknown as Request;
+      const mockResponse = {} as Response;
+      const mockNext = jest.fn();
+
+      Auth.verifyJWTGettingPayLoad = jest.fn().mockReturnValue({
+        id: '1',
+      });
+
+      interceptor.authorization(mockRequest, mockResponse, mockNext);
+      expect(mockNext).toHaveBeenCalledWith();
+    });
+    test('authorization should be used with errors', () => {
+      const mockRequest = {
+        get: jest.fn().mockReturnValue(''),
+        body: {},
+      } as unknown as Request;
+      const mockResponse = {} as Response;
+      const mockNext = jest.fn();
+
+      const mockError = new HttpError(
+        498,
+        'Invalid token',
+        'No token provided'
+      );
+
+      Auth.verifyJWTGettingPayLoad = jest.fn().mockReturnValue({
+        id: '1',
+      });
+
+      interceptor.authorization(mockRequest, mockResponse, mockNext);
+      expect(mockNext).toHaveBeenCalledWith(mockError);
+    });
+    test('usersAuthentication should be used to be ok', async () => {
+      const mockData = {
+        id: '1',
+      };
+      const mockRequest = {
+        body: {
+          validatedId: '1',
+        },
+      } as unknown as Request;
+      const mockResponse = {} as Response;
+      const mockNext = jest.fn();
+      const mockRepo: Repository<User> = {
+        getAll: jest.fn(),
+        getById: jest.fn(),
+        create: jest.fn(),
+        update: jest.fn(),
+        delete: jest.fn(),
+        search: jest.fn(),
+      };
+      (mockRepo.getById as jest.Mock).mockResolvedValue(mockData);
+      await interceptor.usersAuthentication(
+        mockRequest,
+        mockResponse,
+        mockNext
+      );
+      expect(mockNext).toHaveBeenCalled();
+    });
+    test('usersAuthentication should be used with errors', async () => {
+      const mockRepo: Repository<User> = {
+        getAll: jest.fn().mockRejectedValue(new Error('GetAll error')),
+        getById: jest.fn().mockRejectedValue(new Error('Get error')),
+        create: jest.fn().mockRejectedValue(new Error('Post error')),
+        update: jest.fn().mockRejectedValue(new Error('Patch error')),
+        delete: jest.fn().mockRejectedValue(new Error('Delete error')),
+        search: jest.fn().mockRejectedValue(new Error('Search error')),
+      };
+      (mockRepo.getById as jest.Mock).mockResolvedValue('');
+      const mockRequest = {
+        body: {
+          validatedId: '1',
+        },
+      } as unknown as Request;
+      const mockResponse = {} as Response;
+      const mockNext = jest.fn();
+      await interceptor.usersAuthentication(
+        mockRequest,
+        mockResponse,
+        mockNext
+      );
+      expect(mockNext).toHaveBeenCalled();
+    });
+  });
+});
+
 // Import { Request, Response } from 'express';
 // import { User } from '../model/user.js';
 // import { Repository } from '../repository/repository.js';

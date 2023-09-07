@@ -101,6 +101,21 @@ describe('Given the class UserController', () => {
       expect(mockRepo.delete).toHaveBeenCalled();
     });
 
+    test('Then, we use login () and is ok', async () => {
+      const mockUser = { userName: 'alex', password: '1234' };
+      const mockRequest = {
+        params: { id: '1' },
+        body: mockUser,
+      } as unknown as any;
+      const mockResponse = { json: jest.fn() } as unknown as Response;
+      const mockNext = jest.fn();
+
+      (mockRepo.search as jest.Mock).mockResolvedValue(mockUser);
+      Auth.compare = jest.fn().mockReturnValue(true);
+      await userController.login(mockRequest, mockResponse, mockNext);
+      expect(mockRepo.search).toHaveBeenCalled();
+    });
+
     describe('When there are errors callings methods', () => {
       const mockRepo: UserMongoRepository = {
         getAll: jest.fn().mockRejectedValueOnce(new Error('GetAll Error')),
@@ -177,6 +192,21 @@ describe('Given the class UserController', () => {
         await userController.delete(mockRequest, mockResponse, mockNext);
         expect(mockRepo.delete).toHaveBeenCalled();
         expect(mockNext).toHaveBeenCalledWith(new Error('Delete Error'));
+      });
+      test('Then, when we call login(), we should have an error', async () => {
+        const mockRequest = {
+          params: '1',
+          body: { password: '123' },
+        } as unknown as Request;
+
+        const mockResponse = {
+          json: jest.fn(),
+        } as unknown as Response;
+        const mockNext = jest.fn();
+        // Auth.compare = jest.fn().mockResolvedValueOnce(false);
+        await userController.login(mockRequest, mockResponse, mockNext);
+        expect(mockRepo.search).toHaveBeenCalled();
+        expect(mockNext).toHaveBeenCalledWith(new Error('Search Error'));
       });
     });
   });

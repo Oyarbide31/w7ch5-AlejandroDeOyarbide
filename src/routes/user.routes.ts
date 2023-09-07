@@ -34,3 +34,13 @@ userRouter.delete(
   authInterceptor.authorization.bind(authInterceptor),
   userController.delete.bind(userController)
 );
+
+/* This.router.post(
+  '/files',
+  this.FilesInterceptor.singleFileStore('avatar'),
+  (_req, _res, _Next) => {
+    debug(req.body);
+    debug(res.file);
+  }
+);
+ */
