@@ -3,7 +3,7 @@ import createDebug from 'debug';
 import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import { errorMiddleware } from './middleware/error.middleware.js';
-import { userRouter } from './router/user.router.js';
+import { userRouter } from './routes/user.routes.js';
 import { HttpError } from './types/http.error.js';
 
 const debug = createDebug('V25:App');
@@ -22,8 +22,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.get('/', (req: Request, res: Response) => {
-  debug('Hola Mundo');
-  res.write('<h1>Champions and Films </h1>');
+  res.write('<h1>Usuarios </h1>');
   res.end();
 });
 
